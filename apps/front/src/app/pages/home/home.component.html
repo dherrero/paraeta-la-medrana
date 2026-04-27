@@ -18,10 +18,24 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-        <li class="nav-item"><a class="nav-link store-link" href="#nosotros">Nosotros</a></li>
-        <li class="nav-item"><a class="nav-link store-link" href="#productos">Productos</a></li>
-        <li class="nav-item"><a class="nav-link store-link" href="#galeria">Galería</a></li>
-        <li class="nav-item"><a class="nav-link store-link" href="#contacto">Contacto</a></li>
+        <li class="nav-item">
+          <a class="nav-link store-link" href="#nosotros">Nosotros</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link store-link" href="#productos">Productos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link store-link" href="#galeria">Galería</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link store-link" href="#contacto">Contacto</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link store-link" routerLink="/tienda">Tienda</a>
+        </li>
+        <li *appIfLoggedIn="true" class="nav-item">
+          <a class="nav-link store-link" routerLink="/admin/pedidos">Admin</a>
+        </li>
       </ul>
     </div>
   </div>
@@ -32,14 +46,17 @@
   <div class="hero-content text-center">
     <p class="hero-tagline">Auténticos sabores mediterráneos</p>
     <h1 class="hero-title">Paraeta La Medrana</h1>
-    <p class="hero-subtitle">Tienda gourmet de productos artesanales y delicatessen<br>de la Comunitat Valenciana</p>
+    <p class="hero-subtitle">
+      Tienda gourmet de productos artesanales y delicatessen<br />de la
+      Comunitat Valenciana
+    </p>
     <div class="hero-badges mt-4">
       <span class="hero-badge">🧀 Quesos</span>
       <span class="hero-badge">🥩 Ibéricos</span>
       <span class="hero-badge">🍷 Vinos</span>
       <span class="hero-badge">🫒 Aceites</span>
     </div>
-    <a href="#productos" class="btn btn-hero mt-5">
+    <a routerLink="/tienda" class="btn btn-hero mt-5">
       Descubre nuestros productos
     </a>
   </div>
@@ -63,15 +80,20 @@
       </div>
       <div class="col-lg-6 order-lg-1">
         <span class="section-label">Nuestra Historia</span>
-        <h2 class="section-title">Un rincón gourmet en el corazón de La Medrana</h2>
+        <h2 class="section-title">
+          Un rincón gourmet en el corazón de La Medrana
+        </h2>
         <p class="section-text">
-          En <strong>Paraeta La Medrana</strong> encontrarás una cuidada selección de los mejores
-          productos artesanales de la Comunitat Valenciana. Trabajamos directamente con productores
-          locales para ofrecerte quesos, embutidos, aceites, vinos y conservas de la más alta calidad.
+          En <strong>Paraeta La Medrana</strong> encontrarás una cuidada
+          selección de los mejores productos artesanales de la Comunitat
+          Valenciana. Trabajamos directamente con productores locales para
+          ofrecerte quesos, embutidos, aceites, vinos y conservas de la más alta
+          calidad.
         </p>
         <p class="section-text">
-          Nuestra filosofía es simple: producto auténtico, trato cercano y amor por la gastronomía
-          de nuestra tierra. Cada artículo de nuestra tienda ha sido elegido con mimo y conocimiento.
+          Nuestra filosofía es simple: producto auténtico, trato cercano y amor
+          por la gastronomía de nuestra tierra. Cada artículo de nuestra tienda
+          ha sido elegido con mimo y conocimiento.
         </p>
         <div class="about-features row g-3 mt-3">
           <div class="col-6">
@@ -110,13 +132,18 @@
     <div class="text-center mb-5">
       <span class="section-label">Lo que ofrecemos</span>
       <h2 class="section-title">Nuestra selección gourmet</h2>
-      <p class="section-subtitle">Productos de temporada, seleccionados con cuidado y cariño</p>
+      <p class="section-subtitle">
+        Productos de temporada, seleccionados con cuidado y cariño
+      </p>
     </div>
 
     <div class="row g-4">
       @for (product of products; track product.name) {
         <div class="col-sm-6 col-lg-4">
-          <div class="product-card" [class.product-card--highlight]="product.highlight">
+          <div
+            class="product-card"
+            [class.product-card--highlight]="product.highlight"
+          >
             @if (product.highlight) {
               <div class="product-badge">Destacado</div>
             }
@@ -170,7 +197,7 @@
             <span class="location-icon">📍</span>
             <div>
               <strong>Dirección</strong>
-              <p>La Medrana, Valencia<br>Comunitat Valenciana</p>
+              <p>La Medrana, Valencia<br />Comunitat Valenciana</p>
             </div>
           </div>
           <div class="location-item">
@@ -178,8 +205,8 @@
             <div>
               <strong>Horario</strong>
               <p>
-                Lunes a Viernes: 9:00 – 14:00 / 17:00 – 20:00<br>
-                Sábados: 9:00 – 14:00<br>
+                Lunes a Viernes: 9:00 – 14:00 / 17:00 – 20:00<br />
+                Sábados: 9:00 – 14:00<br />
                 Domingos: Cerrado
               </p>
             </div>
@@ -216,7 +243,7 @@
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d-1.0!3d39.5!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDMxJzQ4LjAiTiAxwrAzMCcwMC4wIlc!5e0!3m2!1ses!2ses!4v1600000000000!5m2!1ses!2ses"
             width="100%"
             height="400"
-            style="border:0;"
+            style="border: 0"
             allowfullscreen
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"

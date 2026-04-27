@@ -1,0 +1,187 @@
+<!-- ========== NAVBAR ========== -->
+<nav class="navbar navbar-expand-lg store-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand store-brand" routerLink="/">
+      <span class="brand-leaf">🌿</span>
+      <span class="brand-text">Paraeta La Medrana</span>
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#shopNavbar"
+      aria-controls="shopNavbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="shopNavbar">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+        <li class="nav-item">
+          <a class="nav-link store-link" routerLink="/">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link store-link active-link" routerLink="/tienda"
+            >Tienda</a
+          >
+        </li>
+      </ul>
+    </div>
+    <!-- Cart icon -->
+    <button
+      class="cart-icon-btn ms-3"
+      type="button"
+      (click)="cartOpen.set(true)"
+      aria-label="Abrir carrito"
+      data-testid="open-cart-btn"
+    >
+      🛒
+      @if (cartService.totalItems() > 0) {
+        <span class="cart-badge" data-testid="cart-badge">
+          {{ cartService.totalItems() }}
+        </span>
+      }
+    </button>
+  </div>
+</nav>
+
+<!-- ========== HERO STRIP ========== -->
+<section class="shop-hero">
+  <div class="container text-center">
+    <h1 class="shop-hero-title">🛒 Nuestra Tienda</h1>
+    <p class="shop-hero-subtitle">
+      Productos gourmet artesanales de la Comunitat Valenciana
+    </p>
+  </div>
+</section>
+
+<!-- ========== MAIN CONTENT ========== -->
+<section class="shop-section">
+  <div class="container">
+    <div class="row g-4">
+      <!-- ===== SIDEBAR ===== -->
+      <div class="col-lg-3">
+        <div class="shop-sidebar">
+          <!-- Search -->
+          <div class="sidebar-block">
+            <label class="sidebar-label" for="shop-search">Buscar</label>
+            <input
+              id="shop-search"
+              type="text"
+              class="shop-search-input"
+              placeholder="Buscar productos..."
+              [ngModel]="searchTerm()"
+              (ngModelChange)="onSearchChange($event)"
+              data-testid="shop-search"
+            />
+          </div>
+
+          <!-- Categories -->
+          <div class="sidebar-block">
+            <p class="sidebar-label">Categorías</p>
+            <div class="category-list">
+              <button
+                class="category-btn"
+                [class.category-btn--active]="
+                  selectedCategoryId() === undefined
+                "
+                type="button"
+                (click)="selectCategory(undefined)"
+                data-testid="category-all"
+              >
+                🛒 Todos
+              </button>
+              @for (cat of categories(); track cat.id) {
+                <button
+                  class="category-btn"
+                  [class.category-btn--active]="selectedCategoryId() === cat.id"
+                  type="button"
+                  (click)="selectCategory(cat.id!)"
+                  data-testid="category-btn"
+                >
+                  {{ getEmoji(cat.name) }} {{ cat.name }}
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== PRODUCT GRID ===== -->
+      <div class="col-lg-9">
+        @if (loading()) {
+          <div class="shop-spinner-wrap" data-testid="shop-loading">
+            <div class="shop-spinner"></div>
+            <p class="shop-spinner-text">Cargando productos...</p>
+          </div>
+        }
+
+        @if (!loading() && products().length === 0) {
+          <div class="shop-empty" data-testid="shop-empty">
+            <span class="shop-empty-icon">🔍</span>
+            <p class="shop-empty-text">No se encontraron productos</p>
+            <small class="shop-empty-sub"
+              >Prueba con otro término de búsqueda o categoría</small
+            >
+          </div>
+        }
+
+        @if (!loading() && products().length > 0) {
+          <div class="row g-4">
+            @for (product of products(); track product.id) {
+              <div class="col-sm-6 col-xl-4">
+                <div class="shop-product-card" data-testid="product-card">
+                  <div class="shop-product-icon-wrap">
+                    <span class="shop-product-icon">{{
+                      getEmoji(product.name)
+                    }}</span>
+                  </div>
+                  <h3 class="shop-product-name">{{ product.name }}</h3>
+                  <p class="shop-product-description">
+                    {{ product.description }}
+                  </p>
+                  <div class="shop-product-footer">
+                    <span
+                      class="shop-product-price"
+                      data-testid="product-price"
+                    >
+                      {{ formatPrice(product.price) }}
+                    </span>
+                    <button
+                      class="btn-add-cart"
+                      type="button"
+                      (click)="addToCart(product)"
+                      data-testid="add-to-cart-btn"
+                    >
+                      Añadir al carrito
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FLOATING CART BUTTON ========== -->
+<button
+  class="floating-cart-btn"
+  type="button"
+  (click)="cartOpen.set(true)"
+  aria-label="Ver carrito"
+  data-testid="floating-cart-btn"
+>
+  🛒
+  @if (cartService.totalItems() > 0) {
+    <span class="floating-cart-badge" data-testid="floating-cart-badge">
+      {{ cartService.totalItems() }}
+    </span>
+  }
+</button>
+
+<!-- ========== CART DRAWER ========== -->
+<app-cart-drawer [isOpen]="cartOpen()" (closeCart)="cartOpen.set(false)" />

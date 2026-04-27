@@ -1,0 +1,384 @@
+// ======================================================
+// Paleta Mediterránea Gourmet — Admin Orders Page
+// ======================================================
+:host {
+  --store-brown: #3d2b1f;
+  --store-caramel: #8b5e3c;
+  --store-gold: #c9943a;
+  --store-cream: #f5f0e8;
+  --store-parchment: #ede4d3;
+  --store-green: #4a6741;
+  --store-text: #2c1a0e;
+  --store-text-light: #7a5c40;
+  --store-border: #d6c4a5;
+  --shadow-warm: 0 4px 24px rgba(61, 43, 31, 0.12);
+
+  display: block;
+  background-color: var(--store-cream);
+  color: var(--store-text);
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+}
+
+// ======================================================
+// HERO STRIP
+// ======================================================
+.admin-hero {
+  background: linear-gradient(135deg, var(--store-brown) 0%, #5c3d28 100%);
+  padding: 2.5rem 0;
+  border-bottom: 3px solid var(--store-gold);
+}
+
+.admin-hero-title {
+  color: var(--store-cream);
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+}
+
+.admin-hero-subtitle {
+  color: rgba(245, 240, 232, 0.7);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+// ======================================================
+// MAIN SECTION
+// ======================================================
+.admin-section {
+  padding: 2rem 0 4rem;
+}
+
+// ======================================================
+// SPINNER
+// ======================================================
+.admin-spinner-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 0;
+  gap: 1rem;
+}
+
+.admin-spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid var(--store-border);
+  border-top-color: var(--store-gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.admin-spinner-text {
+  color: var(--store-text-light);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+// ======================================================
+// EMPTY STATE
+// ======================================================
+.admin-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 0;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.admin-empty-icon {
+  font-size: 3.5rem;
+}
+
+.admin-empty-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--store-text-light);
+  margin: 0;
+}
+
+// ======================================================
+// ORDERS TABLE
+// ======================================================
+.orders-table {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-warm);
+  border: 1px solid var(--store-border);
+  font-size: 0.88rem;
+
+  thead th {
+    background: var(--store-brown);
+    color: var(--store-cream);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.85rem 1rem;
+    border: none;
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+    border-color: var(--store-border);
+    color: var(--store-text);
+  }
+}
+
+.order-row {
+  transition: background 0.15s;
+
+  &:hover {
+    background: var(--store-parchment);
+  }
+
+  &--expanded {
+    background: var(--store-parchment);
+  }
+}
+
+.order-id {
+  font-weight: 700;
+  color: var(--store-caramel);
+}
+
+.order-customer {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.order-email,
+.order-phone {
+  color: var(--store-text-light);
+  font-size: 0.82rem;
+}
+
+.order-total {
+  font-weight: 700;
+  color: var(--store-green);
+  white-space: nowrap;
+}
+
+.order-date {
+  color: var(--store-text-light);
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+// ======================================================
+// STATUS BADGE
+// ======================================================
+.status-badge {
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+
+  &--warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffc107;
+  }
+
+  &--primary {
+    background: #cfe2ff;
+    color: #084298;
+    border: 1px solid #84b6f4;
+  }
+
+  &--info {
+    background: #cff4fc;
+    color: #055160;
+    border: 1px solid #86cfda;
+  }
+
+  &--success {
+    background: #d1e7dd;
+    color: #0a3622;
+    border: 1px solid #a3cfbb;
+  }
+
+  &--danger {
+    background: #f8d7da;
+    color: #842029;
+    border: 1px solid #f1aeb5;
+  }
+}
+
+// ======================================================
+// ACTIONS CELL
+// ======================================================
+.order-actions {
+  white-space: nowrap;
+}
+
+.actions-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-select {
+  padding: 0.35rem 0.6rem;
+  border: 1.5px solid var(--store-border);
+  border-radius: 6px;
+  background: var(--store-cream);
+  color: var(--store-text);
+  font-size: 0.82rem;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: var(--store-gold);
+  }
+}
+
+.btn-expand {
+  width: 30px;
+  height: 30px;
+  background: none;
+  border: 1px solid var(--store-border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  color: var(--store-text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  flex-shrink: 0;
+
+  &:hover {
+    background: var(--store-parchment);
+    color: var(--store-brown);
+    border-color: var(--store-caramel);
+  }
+}
+
+// ======================================================
+// EXPANDED ITEMS PANEL
+// ======================================================
+.order-items-row td {
+  padding: 0 !important;
+  border-top: none !important;
+}
+
+.order-items-panel {
+  background: var(--store-parchment);
+  padding: 1.25rem 1.5rem;
+  border-top: 2px solid var(--store-gold);
+  border-bottom: 1px solid var(--store-border);
+}
+
+.order-notes,
+.order-address {
+  font-size: 0.85rem;
+  color: var(--store-text);
+  margin-bottom: 0.75rem;
+}
+
+.items-table {
+  width: 100%;
+  font-size: 0.85rem;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(61, 43, 31, 0.08);
+
+  thead th {
+    background: var(--store-caramel);
+    color: white;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.6rem 0.85rem;
+    border: none;
+  }
+
+  tbody td {
+    padding: 0.55rem 0.85rem;
+    border-bottom: 1px solid var(--store-border);
+    color: var(--store-text);
+  }
+
+  tfoot td {
+    padding: 0.65rem 0.85rem;
+    border-top: 2px solid var(--store-border);
+  }
+}
+
+.items-empty {
+  text-align: center;
+  color: var(--store-text-light);
+  font-style: italic;
+}
+
+.items-total-label {
+  font-weight: 700;
+  color: var(--store-text);
+  text-align: right;
+}
+
+.items-total-value {
+  font-weight: 800;
+  color: var(--store-green);
+}
+
+// ======================================================
+// PAGINATION
+// ======================================================
+.pagination-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.btn-page {
+  padding: 0.55rem 1.25rem;
+  background: var(--store-gold);
+  border: none;
+  border-radius: 8px;
+  color: var(--store-brown);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    opacity 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #e0a840;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.page-info {
+  font-size: 0.88rem;
+  color: var(--store-text-light);
+  white-space: nowrap;
+}

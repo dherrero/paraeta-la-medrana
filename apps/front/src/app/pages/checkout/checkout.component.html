@@ -1,0 +1,233 @@
+<!-- ========== NAVBAR ========== -->
+<nav class="navbar navbar-expand-lg store-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand store-brand" routerLink="/">
+      <span class="brand-leaf">🌿</span>
+      <span class="brand-text">Paraeta La Medrana</span>
+    </a>
+    <div class="ms-auto">
+      <a class="nav-link store-link" routerLink="/tienda"
+        >← Volver a la tienda</a
+      >
+    </div>
+  </div>
+</nav>
+
+<!-- ========== HERO STRIP ========== -->
+<section class="checkout-hero">
+  <div class="container text-center">
+    <h1 class="checkout-hero-title">Finalizar pedido</h1>
+    <p class="checkout-hero-subtitle">
+      Completa tus datos para confirmar la compra
+    </p>
+  </div>
+</section>
+
+<!-- ========== SUCCESS STATE ========== -->
+@if (success()) {
+  <section class="checkout-success">
+    <div class="container">
+      <div class="success-card">
+        <div class="success-icon">✅</div>
+        <h2 class="success-title">¡Pedido realizado con éxito!</h2>
+        <p class="success-text">
+          Hemos recibido tu pedido. Nos pondremos en contacto contigo pronto
+          para confirmar los detalles.
+        </p>
+        <a
+          class="btn-success-back"
+          routerLink="/tienda"
+          data-testid="success-back-btn"
+        >
+          Seguir comprando
+        </a>
+      </div>
+    </div>
+  </section>
+}
+
+<!-- ========== MAIN CONTENT ========== -->
+@if (!success()) {
+  <section class="checkout-section">
+    <div class="container">
+      <div class="row g-4">
+        <!-- ===== FORM ===== -->
+        <div class="col-lg-7">
+          <div class="checkout-card">
+            <h2 class="checkout-card-title">Datos de contacto</h2>
+
+            @if (error()) {
+              <div
+                class="checkout-error"
+                role="alert"
+                data-testid="checkout-error"
+              >
+                {{ error() }}
+              </div>
+            }
+
+            @if (cartService.items().length === 0) {
+              <div class="checkout-empty" data-testid="checkout-empty">
+                <p>Tu carrito está vacío.</p>
+                <a routerLink="/tienda" class="btn-back-shop">Ir a la tienda</a>
+              </div>
+            } @else {
+              <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+                <div class="form-group">
+                  <label class="form-label" for="customerName"
+                    >Nombre completo *</label
+                  >
+                  <input
+                    id="customerName"
+                    type="text"
+                    class="form-control-store"
+                    formControlName="customerName"
+                    placeholder="Tu nombre y apellidos"
+                    data-testid="input-name"
+                    [class.input-error]="
+                      form.get('customerName')?.invalid &&
+                      form.get('customerName')?.touched
+                    "
+                  />
+                  @if (
+                    form.get('customerName')?.invalid &&
+                    form.get('customerName')?.touched
+                  ) {
+                    <span class="form-error-msg" data-testid="error-name"
+                      >El nombre es obligatorio</span
+                    >
+                  }
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="customerEmail">Email *</label>
+                  <input
+                    id="customerEmail"
+                    type="email"
+                    class="form-control-store"
+                    formControlName="customerEmail"
+                    placeholder="tu@email.com"
+                    data-testid="input-email"
+                    [class.input-error]="
+                      form.get('customerEmail')?.invalid &&
+                      form.get('customerEmail')?.touched
+                    "
+                  />
+                  @if (
+                    form.get('customerEmail')?.invalid &&
+                    form.get('customerEmail')?.touched
+                  ) {
+                    <span class="form-error-msg" data-testid="error-email"
+                      >Introduce un email válido</span
+                    >
+                  }
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="customerPhone">Teléfono</label>
+                  <input
+                    id="customerPhone"
+                    type="tel"
+                    class="form-control-store"
+                    formControlName="customerPhone"
+                    placeholder="(opcional)"
+                    data-testid="input-phone"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="customerAddress"
+                    >Dirección de entrega</label
+                  >
+                  <input
+                    id="customerAddress"
+                    type="text"
+                    class="form-control-store"
+                    formControlName="customerAddress"
+                    placeholder="Calle, número, ciudad... (opcional)"
+                    data-testid="input-address"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="notes"
+                    >Notas adicionales</label
+                  >
+                  <textarea
+                    id="notes"
+                    class="form-control-store"
+                    formControlName="notes"
+                    placeholder="Instrucciones especiales, alergias, preferencias... (opcional)"
+                    rows="3"
+                    data-testid="input-notes"
+                  ></textarea>
+                </div>
+
+                <!-- Payment placeholder -->
+                <div class="payment-placeholder">
+                  <p class="payment-placeholder-title">💳 Método de pago</p>
+                  <p class="payment-placeholder-text">
+                    <!-- TODO: Integrate payment gateway (Stripe / Redsys) -->
+                    El pago se gestionará a través de transferencia bancaria o
+                    en tienda.<br />
+                    Te contactaremos para confirmar los detalles del pedido.
+                  </p>
+                </div>
+
+                <button
+                  type="submit"
+                  class="btn-submit-order"
+                  [disabled]="
+                    form.invalid ||
+                    loading() ||
+                    cartService.items().length === 0
+                  "
+                  data-testid="submit-order-btn"
+                >
+                  @if (loading()) {
+                    <span class="btn-spinner"></span>
+                    Procesando...
+                  } @else {
+                    Confirmar pedido
+                  }
+                </button>
+              </form>
+            }
+          </div>
+        </div>
+
+        <!-- ===== ORDER SUMMARY ===== -->
+        <div class="col-lg-5">
+          <div class="checkout-card summary-card">
+            <h2 class="checkout-card-title">Resumen del pedido</h2>
+
+            @if (cartService.items().length === 0) {
+              <p class="summary-empty">No hay productos en el carrito</p>
+            }
+
+            @for (item of cartService.items(); track item.product.id) {
+              <div class="summary-item" data-testid="summary-item">
+                <div class="summary-item-info">
+                  <span class="summary-item-name">{{ item.product.name }}</span>
+                  <span class="summary-item-qty">× {{ item.quantity }}</span>
+                </div>
+                <span class="summary-item-subtotal">
+                  {{ formatPrice(item.product.price * item.quantity) }}
+                </span>
+              </div>
+            }
+
+            @if (cartService.items().length > 0) {
+              <div class="summary-total">
+                <span class="summary-total-label">Total</span>
+                <span class="summary-total-value" data-testid="summary-total">
+                  {{ formatPrice(cartService.totalPrice()) }}
+                </span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+}

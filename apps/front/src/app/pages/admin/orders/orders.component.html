@@ -1,0 +1,184 @@
+<!-- ========== HERO STRIP ========== -->
+<section class="admin-hero">
+  <div class="container">
+    <h1 class="admin-hero-title">Gestión de pedidos</h1>
+    <p class="admin-hero-subtitle">
+      {{ total() }} pedido{{ total() !== 1 ? 's' : '' }} en total
+    </p>
+  </div>
+</section>
+
+<!-- ========== MAIN CONTENT ========== -->
+<section class="admin-section">
+  <div class="container-fluid">
+    @if (loading()) {
+      <div class="admin-spinner-wrap" data-testid="orders-loading">
+        <div class="admin-spinner"></div>
+        <p class="admin-spinner-text">Cargando pedidos...</p>
+      </div>
+    }
+
+    @if (!loading() && orders().length === 0) {
+      <div class="admin-empty" data-testid="orders-empty">
+        <span class="admin-empty-icon">📋</span>
+        <p class="admin-empty-text">No hay pedidos todavía</p>
+      </div>
+    }
+
+    @if (!loading() && orders().length > 0) {
+      <div class="table-responsive">
+        <table class="table orders-table" data-testid="orders-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of orders(); track order.id) {
+              <tr
+                class="order-row"
+                [class.order-row--expanded]="expandedOrderId() === order.id"
+                data-testid="order-row"
+              >
+                <td class="order-id">#{{ order.id }}</td>
+                <td class="order-customer">{{ order.customerName }}</td>
+                <td class="order-email">{{ order.customerEmail }}</td>
+                <td class="order-phone">{{ order.customerPhone ?? '—' }}</td>
+                <td class="order-total">{{ formatPrice(order.total) }}</td>
+                <td>
+                  <span
+                    class="status-badge"
+                    [class]="
+                      'status-badge status-badge--' + statusBadge[order.status]
+                    "
+                    data-testid="order-status-badge"
+                  >
+                    {{ statusLabels[order.status] }}
+                  </span>
+                </td>
+                <td class="order-date">{{ formatDate(order.createdAt) }}</td>
+                <td class="order-actions">
+                  <div class="actions-wrap">
+                    <!-- Status select -->
+                    <select
+                      class="status-select"
+                      [ngModel]="order.status"
+                      (ngModelChange)="changeStatus(order, $event)"
+                      data-testid="order-status-select"
+                      aria-label="Cambiar estado del pedido"
+                    >
+                      @for (s of statusOptions; track s) {
+                        <option [value]="s">{{ statusLabels[s] }}</option>
+                      }
+                    </select>
+                    <!-- Expand toggle -->
+                    <button
+                      class="btn-expand"
+                      type="button"
+                      (click)="toggleExpand(order.id!)"
+                      [attr.aria-expanded]="expandedOrderId() === order.id"
+                      data-testid="order-expand-btn"
+                    >
+                      {{ expandedOrderId() === order.id ? '▲' : '▼' }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Expanded items row -->
+              @if (expandedOrderId() === order.id) {
+                <tr class="order-items-row" data-testid="order-items-row">
+                  <td colspan="8">
+                    <div class="order-items-panel">
+                      @if (order.notes) {
+                        <p class="order-notes">
+                          <strong>Notas:</strong> {{ order.notes }}
+                        </p>
+                      }
+                      @if (order.customerAddress) {
+                        <p class="order-address">
+                          <strong>Dirección:</strong>
+                          {{ order.customerAddress }}
+                        </p>
+                      }
+                      <table class="items-table">
+                        <thead>
+                          <tr>
+                            <th>Producto</th>
+                            <th>Precio unitario</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @if (order.items && order.items.length > 0) {
+                            @for (item of order.items; track item.id) {
+                              <tr data-testid="order-item-row">
+                                <td>{{ item.productName }}</td>
+                                <td>{{ formatPrice(item.productPrice) }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ formatPrice(item.subtotal) }}</td>
+                              </tr>
+                            }
+                          } @else {
+                            <tr>
+                              <td colspan="4" class="items-empty">
+                                Sin detalle de artículos
+                              </td>
+                            </tr>
+                          }
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td colspan="3" class="items-total-label">
+                              Total del pedido
+                            </td>
+                            <td class="items-total-value">
+                              {{ formatPrice(order.total) }}
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ========== PAGINATION ========== -->
+      <div class="pagination-wrap" data-testid="pagination">
+        <button
+          class="btn-page"
+          type="button"
+          (click)="prevPage()"
+          [disabled]="page() <= 1"
+          data-testid="prev-page-btn"
+        >
+          ← Anterior
+        </button>
+        <span class="page-info" data-testid="page-info">
+          Página {{ page() }} · {{ orders().length }} de {{ total() }}
+        </span>
+        <button
+          class="btn-page"
+          type="button"
+          (click)="nextPage()"
+          [disabled]="page() * limit >= total()"
+          data-testid="next-page-btn"
+        >
+          Siguiente →
+        </button>
+      </div>
+    }
+  </div>
+</section>
