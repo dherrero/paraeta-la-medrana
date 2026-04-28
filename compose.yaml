@@ -53,6 +53,8 @@ services:
     depends_on:
       - back
     restart: unless-stopped
+    networks:
+      - back-starter-network
 
 volumes:
   starter-postgresdb:
