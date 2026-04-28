@@ -44,7 +44,7 @@ services:
     networks:
       - back-starter-network
     volumes:
-      - upload_files:/home/back/${NODE_UPLOAD_FILES}
+      - upload_files:/home/back/uploads
       - tmp:/tmp
   front:
     build:
