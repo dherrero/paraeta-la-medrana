@@ -13,7 +13,7 @@ COPY tsconfig.base.json ./
 RUN npm install -g npm@10.9.0
 
 # Instalar las dependencias necesarias ignorando scripts post-instalación
-RUN npm install --ignore-scripts --verbose
+RUN npm install --verbose
 
 # Copiar el código fuente para construir la aplicación Frontend
 COPY . .
