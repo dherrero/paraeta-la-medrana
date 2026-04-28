@@ -1,4 +1,4 @@
-name: nx-fullstack-starter
+name: paraeta-la-medrana
 services:
   postgresdb:
     image: postgres
@@ -36,14 +36,12 @@ services:
       - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-1h}
       - JWT_REFRESH_EXPIRES_IN=${JWT_REFRESH_EXPIRES_IN:-7d}
       - HASH_SALT_ROUNDS=${HASH_SALT_ROUNDS:-10}
-      - NODE_PRODUCTION=${NODE_PRODUCTION:-false}
+      - NODE_PRODUCTION=${NODE_PRODUCTION:-true}
       - NODE_UPLOAD_FILES=${NODE_UPLOAD_FILES:-uploads}
-    ports:
-      - '${NODE_PORT:-3200}'
     networks:
       - back-starter-network
     volumes:
-      - upload_files:/home/back/${NODE_UPLOAD_FILES}
+      - upload_files:/home/back/${NODE_UPLOAD_FILES:-uploads}
       - tmp:/tmp
   front:
     build:
@@ -53,6 +51,8 @@ services:
     depends_on:
       - back
     restart: unless-stopped
+    environment:
+      - SERVICE_FQDN_FRONT=https://paraetamedrana.dani-herrero.es
     networks:
       - back-starter-network
 
