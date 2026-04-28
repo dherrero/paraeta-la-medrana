@@ -36,12 +36,15 @@ services:
       - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-1h}
       - JWT_REFRESH_EXPIRES_IN=${JWT_REFRESH_EXPIRES_IN:-7d}
       - HASH_SALT_ROUNDS=${HASH_SALT_ROUNDS:-10}
-      - NODE_PRODUCTION=${NODE_PRODUCTION:-true}
+      - NODE_PRODUCTION=${NODE_PRODUCTION:-false}
       - NODE_UPLOAD_FILES=${NODE_UPLOAD_FILES:-uploads}
+      - SERVICE_FQDN_BACK=${SERVICE_FQDN_BACK}
+    ports:
+      - '${NODE_PORT:-3200}'
     networks:
       - back-starter-network
     volumes:
-      - upload_files:/home/back/uploads
+      - upload_files:/home/back/${NODE_UPLOAD_FILES}
       - tmp:/tmp
   front:
     build:
@@ -52,7 +55,9 @@ services:
       - back
     restart: unless-stopped
     environment:
-      - SERVICE_FQDN_FRONT=https://paraetamedrana.dani-herrero.es
+      - SERVICE_FQDN_FRONT=${SERVICE_FQDN_FRONT}
+    ports:
+      - '${FRONT_PORT:-80}'
     networks:
       - back-starter-network
 
