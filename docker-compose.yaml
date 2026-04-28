@@ -51,8 +51,8 @@ services:
     depends_on:
       - back
     restart: unless-stopped
-    environment:
-      - SERVICE_FQDN_FRONT=https://paraetamedrana.dani-herrero.es
+    ports:
+      - '${FRONT_PORT:-80}'
     networks:
       - back-starter-network
 
