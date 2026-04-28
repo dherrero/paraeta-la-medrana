@@ -1,5 +1,5 @@
 # Etapa 1: Construcción de la aplicación Frontend (Node.js)
-FROM node:18-slim AS build
+FROM node:22-slim AS build
 
 # Directorio de trabajo para la compilación
 WORKDIR /app
@@ -9,10 +9,7 @@ COPY package*.json ./
 COPY nx.json ./
 COPY tsconfig.base.json ./
 
-# Actualizar npm a una versión compatible con Node.js 18
-RUN npm install -g npm@10.9.0
-
-# Instalar las dependencias necesarias ignorando scripts post-instalación
+# Instalar las dependencias necesarias
 RUN npm install --verbose
 
 # Copiar el código fuente para construir la aplicación Frontend
@@ -21,7 +18,7 @@ COPY . .
 # Angular builds require significant memory; set heap limit before building
 ENV NODE_OPTIONS="--max-old-space-size=3072"
 
-# Construir la aplicación (los archivos compilados estarán en dist/apps/app-front)
+# Construir la aplicación (los archivos compilados estarán en dist/apps/front)
 RUN npm run build:front --verbose
 
 # Etapa 2: Imagen final (Nginx para servir la aplicación)
