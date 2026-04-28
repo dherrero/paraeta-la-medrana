@@ -1,7 +1,7 @@
 # Etapa 1: Construcción de la aplicación Back (Node.js)
 FROM node:22-slim AS build
 
-# Herramientas necesarias para compilar módulos nativos (bcrypt, pdf2pic, etc.)
+# Herramientas necesarias para compilar módulos nativos (bcrypt, etc.)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     make \
@@ -22,9 +22,8 @@ COPY . .
 
 RUN npm run build:back --verbose
 
-# Instalar dependencias de producción en el directorio de salida generado por NX
-WORKDIR /app/dist/apps/back
-RUN npm install --omit=dev
+# Eliminar devDependencies del workspace para que solo queden las de producción
+RUN npm prune --omit=dev
 
 # Etapa 2: Imagen final para producción
 FROM node:22-slim
@@ -40,7 +39,9 @@ ENV APP_DIR=/home/app-back/
 
 RUN groupadd app-back && useradd -g app-back -m app-back
 
+# Copiar archivos compilados y node_modules ya podados (sin devDeps)
 COPY --from=build /app/dist/apps/back ${APP_DIR}
+COPY --from=build /app/node_modules ${APP_DIR}node_modules
 
 WORKDIR ${APP_DIR}
 
