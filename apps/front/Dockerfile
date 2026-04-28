@@ -18,6 +18,9 @@ RUN npm install --verbose
 # Copiar el código fuente para construir la aplicación Frontend
 COPY . .
 
+# Angular builds require significant memory; set heap limit before building
+ENV NODE_OPTIONS="--max-old-space-size=3072"
+
 # Construir la aplicación (los archivos compilados estarán en dist/apps/app-front)
 RUN npm run build:front --verbose
 
