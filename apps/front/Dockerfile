@@ -9,7 +9,8 @@ COPY package*.json ./
 COPY nx.json ./
 COPY tsconfig.base.json ./
 
-# Instalar las dependencias necesarias
+# HUSKY=0 evita que husky falle al no haber .git en el contexto Docker
+ENV HUSKY=0
 RUN npm install --verbose
 
 # Copiar el código fuente para construir la aplicación Frontend

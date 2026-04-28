@@ -14,6 +14,8 @@ COPY package*.json ./
 COPY tsconfig*.json ./
 COPY nx.json ./
 
+# HUSKY=0 evita que husky falle al no haber .git en el contexto Docker
+ENV HUSKY=0
 RUN npm install --verbose
 
 COPY . .
