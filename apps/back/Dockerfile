@@ -41,7 +41,7 @@ RUN apk update && apk add --no-cache \
     ca-certificates
 
 # Copiar los archivos compilados de la etapa de construcción
-COPY --from=build /app/dist/apps/app-back ${APP_DIR}
+COPY --from=build /app/dist/apps/back ${APP_DIR}
 
 WORKDIR ${APP_DIR}
 

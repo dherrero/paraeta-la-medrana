@@ -50,7 +50,7 @@ RUN groupadd app-front && \
 WORKDIR ${APP_DIR}
 
 # Copiar los archivos compilados de la etapa de construcción
-COPY --from=build /app/dist/apps/app-front ${APP_DIR}
+COPY --from=build /app/dist/apps/front/browser ${APP_DIR}
 
 # Exponer el puerto 80
 EXPOSE 80
